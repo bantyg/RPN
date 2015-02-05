@@ -6,8 +6,29 @@
 #include "expr_assert.h"
 
 void test_to_convert_char_Number_to_int(){
-	char* strNum = "1";
-	assertEqual(atoi(strNum),1);
+	char strNum = '1';
+	assertEqual(toInt(strNum),1);
+}
+
+void test_to_check_the_input_is_operator_or_not(){
+	char op = '+';
+	assertEqual(isOperator(op),1);
+}
+
+void test_to_check_the_input_is_operator_or_not_if_input_is_numChar(){
+	char op = '1';
+	assertEqual(isOperator(op),0);
+}
+
+void test_to_check_the_input_in_the_range_of_0_to_9_or_not(){
+	char op = '1';
+	assertEqual(isDigit(op),1);
+}
+
+
+void test_to_check_the_input_in_the_range_of_0_to_9_or_not_for_char(){
+	char op = 'w';
+	assertEqual(isDigit(op),0);
 }
 
 void test_to_evaluate_the_1_plus_2_operation(){

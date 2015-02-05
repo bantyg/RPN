@@ -3,10 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-// int toInt(char ch){
-// 	char str[] = {ch,'\0'};
-// 	return atoi(str);
-// }
+int toInt(char ch){
+	char str[] = {ch,'\0'};
+	return atoi(str);
+}
 
 int isOperator(char a){
 	return (a=='+' || a=='-' || a=='*' || a=='/' || a=='^');
@@ -38,9 +38,10 @@ int getResult(Stack s1,char c){
 
 
 Result evaluate(char *expression){
-	int i,j,*digit,num1,num2,result,count,operandCount=0,operatorCount=0;
+	int i,j,*digit,result,count;
+	int operandCount=0,operatorCount=0;
 	Stack stack = createStack();
-	Result status,error = {1,0};
+	Result error = {1,0};
 	digit = malloc(strlen(expression)*sizeof(int));
 	for (i = 0; i < strlen(expression); ++i){
 		if(isDigit(expression[i])){
@@ -48,17 +49,14 @@ Result evaluate(char *expression){
 			push(&stack,&digit[operandCount]);
 		}
 		if(expression[i] != ' ' && isOperator(expression[i])){
-			if(stack.list->count <= 1)
-				return error;
+			if(stack.list->count <= 1)return error;
 			result = getResult(stack,expression[i]);
 			push(&stack, &result);
 			operatorCount++;
 		}
 	}
 	if(operandCount != operatorCount+1) return error;		
-	status.status = result;
-	status.error = 0;
-	return status;
+	return (Result){0,result};
 }
 
 
