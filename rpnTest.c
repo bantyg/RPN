@@ -16,12 +16,6 @@ void test_to_evaluate_the_1_plus_2_operation(){
 	assertEqual(result.status,3);
 }
 
-void test_to_evaluate_the_1_plus_2_operation_gives_error(){
-	char* strExp = "1 2 + +";
-	Result result = evaluate(strExp);
-	assertEqual(result.error,1);
-}
-
 void test_to_evaluate_the_3_minus_2_operation(){
 	char* strExp = "2 3 -";
 	Result result = evaluate(strExp);
@@ -32,12 +26,6 @@ void test_to_evaluate_the_3_multiply_2_operation(){
 	char* strExp = "3 2 *";
 	Result result = evaluate(strExp);
 	assertEqual(result.status,6);
-}
-
-void test_to_evaluate_the_3_minus_2_operation_will_show_error_1(){
-	char* strExp = "2 3 - 3";
-	Result result = evaluate(strExp);
-	assertEqual(result.error,1);
 }
 
 void test_to_evaluate_the_8_devision_4_operation(){
@@ -72,5 +60,33 @@ void test_to_evaluate_the_operation_which_has_operator_in_between_with_parenthis
 	assertEqual(result.status,14);
 }
 
+void test_to_evaluate_the_3_minus_2_operation_will_show_error_1(){
+	char* strExp = "2 3 - 3";
+	Result result = evaluate(strExp);
+	assertEqual(result.error,1);
+}
 
- 
+void test_to_evaluate_the_1_plus_2_operation_gives_error(){
+	char* strExp = "1 2 + +";
+	Result result = evaluate(strExp);
+	assertEqual(result.error,1);
+}
+
+
+void test_to_evaluate_gives_error_if_there_is_no_operator(){
+	char* strExp = "1 2 3 4";
+	Result result = evaluate(strExp);
+	assertEqual(result.error,1);
+}
+
+void test_to_evaluate_gives_error_if_there_is_no_operand(){
+	char* strExp = "+ - + +";
+	Result result = evaluate(strExp);
+	assertEqual(result.error,1);
+}
+
+void test_to_evaluate_gives_error_if_there_is_any_character_present_in_the_expression(){
+	char* strExp = "1 c + +";
+	Result result = evaluate(strExp);
+	assertEqual(result.error,1);
+}
