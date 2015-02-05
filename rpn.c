@@ -3,10 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-int toInt(char ch){
-	char str[] = {ch,'\0'};
-	return atoi(str);
-}
+// int toInt(char ch){
+// 	char str[] = {ch,'\0'};
+// 	return atoi(str);
+// }
 
 int isOperator(char a){
 	return (a=='+' || a=='-' || a=='*' || a=='/' || a=='^');
@@ -30,30 +30,34 @@ int isDigit(char c){
 int getResult(Stack s1,char c){
 	int j,num1,num2,ans;
 	Result result;
-		num1 =*(int*)pop(&s1);
-		num2 =*(int*)pop(&s1);
-		ans = performOperation(num1,num2,c);
+	num1 =*(int*)pop(&s1);
+	num2 =*(int*)pop(&s1);
+	ans = performOperation(num1,num2,c);
 	return ans;
 }
 
+
 Result evaluate(char *expression){
-	int i,j,*digit,num1,num2,result,count;
+	int i,j,*digit,num1,num2,result,count,operandCount=0,operatorCount=0;
 	Stack stack = createStack();
-	Result status;
-	digit = malloc(sizeof(expression)*sizeof(int));
+	Result status,error = {1,0};
+	digit = malloc(strlen(expression)*sizeof(int));
 	for (i = 0; i < strlen(expression); ++i){
 		if(isDigit(expression[i])){
-			digit[i] = toInt(expression[i]);
-			push(&stack,&digit[i]);
+			digit[++operandCount] = atoi(&expression[i]);
+			push(&stack,&digit[operandCount]);
 		}
-		if(expression[i]!= ' ' && isOperator(expression[i])){
-			for (j = 0; j <stack.list->count-1 ; ++j){
-				result = getResult(stack,expression[i]);
-				status.status = result;
-				push(&stack, &result);
-			}
-		}		
+		if(expression[i] != ' ' && isOperator(expression[i])){
+			if(stack.list->count <= 1)
+				return error;
+			result = getResult(stack,expression[i]);
+			push(&stack, &result);
+			operatorCount++;
+		}
 	}
+	if(operandCount != operatorCount+1) return error;		
+	status.status = result;
+	status.error = 0;
 	return status;
 }
 
