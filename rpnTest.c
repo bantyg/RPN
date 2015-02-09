@@ -6,7 +6,7 @@
 #include "expr_assert.h"
 
 void test_to_convert_char_Number_to_int(){
-	char strNum = '1';
+	char* strNum = "1";
 	assertEqual(toInt(strNum),1);
 }
 
@@ -37,10 +37,22 @@ void test_to_evaluate_the_1_plus_2_operation(){
 	assertEqual(result.status,3);
 }
 
+void test_to_evaluate_the_1_plus_2_operation_for_two_digits(){
+	char* strExp = "11 22 +";
+	Result result = evaluate(strExp);
+	assertEqual(result.status,33);
+}
+
 void test_to_evaluate_the_3_minus_2_operation(){
 	char* strExp = "2 3 -";
 	Result result = evaluate(strExp);
 	assertEqual(result.status,-1);
+}
+
+void test_to_evaluate_the_3_minus_2_operation_for_two_digits(){
+	char* strExp = "22 33 -";
+	Result result = evaluate(strExp);
+	assertEqual(result.status,-11);
 }
 
 void test_to_evaluate_the_3_multiply_2_operation(){
@@ -107,7 +119,7 @@ void test_to_evaluate_gives_error_if_there_is_no_operand(){
 }
 
 void test_to_evaluate_gives_error_if_there_is_any_character_present_in_the_expression(){
-	char* strExp = "1 c + +";
+	char* strExp = "11 c + + 2";
 	Result result = evaluate(strExp);
 	assertEqual(result.error,1);
 }

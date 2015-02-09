@@ -6,7 +6,7 @@ struct Result{
 
 typedef struct Result Result;
 Result evaluate(char *expression);
-int toInt(char ch);
+int toInt(char* ch);
 int isOperator(char a);
 int isDigit(char c);
 
