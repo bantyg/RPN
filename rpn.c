@@ -8,7 +8,7 @@ int toInt(char* ch){
 }
 
 int isOperator(char a){
-	return (a=='+' || a=='-' || a=='*' || a=='/' || a=='^');
+	return (a=='+' || a=='-' || a=='*' || a=='/' || a=='^' || a=='(' || a==')');
 }
 
 int performOperation(int num1,int num2,char op){
@@ -69,8 +69,74 @@ Result evaluate(char *expression){
 	return (operandCount != operatorCount+1)?(Result){1,0}:(Result){0,result};
 }
 
+int handleOperator(char operator){
+	switch(operator){
+		case '+':return 1;
+		case '-':return 1;
+		case '*':return 2;
+		case '/':return 2;
+		case '(':return 3;
+		case ')':return 4;
+		default:return 0;
+	}
+}
 
+Stack *handlePrececednce(Stack *operands,Stack *operators,char *temp){
+	char *space = " ";
+	char brace = '(';
+	int i,index;
+	if(handleOperator((*(char*)(*operators->top)->data))==1 && handleOperator(*temp)>= 1){
+		push(operands,deleteElementAt(operators->list,operators->list->count-2));
+		push(operands,space);
+	}
+	if(handleOperator((*(char*)(*operators->top)->data)) ==2 &&  handleOperator(*temp)>= 2){
+		push(operands,deleteElementAt(operators->list,operators->list->count-2));
+		push(operands,space);
+	}
+	return operands;
+}
 
+// Stack handleBrace(Stack *operands,Stack *operators,char *temp,int index){
+// 	char *space = " ";
+// 	if(handleOperator((*(char*)(*operators->top)->data)) ==2 &&  handleOperator(*temp)>= 2){
+// 		push(operands,deleteElementAt(operators->list,operators->list->count-2));
+// 		push(operands,space);
+// 	}
+
+// } 
+
+char * infixToPostfix(char * expression){
+	int i,j,k,operatorCount,operandCount,index;
+	char *ch,*result,temp=0,*brace;
+	Stack operands = createStack();
+	Stack operators = createStack();
+	result = calloc(strlen(expression) + 1,sizeof(char));
+	for (i = 0; i < strlen(expression); i++){
+		if(!isOperator(expression[i])){
+			push(&operands,&expression[i]);
+		}
+		else{
+			if(isOperator(expression[i])){
+				if(operators.list->count >= 1){
+					temp = *(char*)(*operators.top)->data;
+				}
+				push(&operators,&expression[i]);
+				handlePrececednce(&operands, &operators,&temp);
+				i++;
+			}
+		}
+	}
+	operandCount = operands.list->count;
+	operatorCount = operators.list->count * 2;
+	for (j = 0; j< operandCount; ++j){
+		result[j] = *(char*)deleteElementAt(operands.list,0);
+	}
+	for (k = operandCount; k < operandCount+operatorCount - 1; k++){
+		result[k] = ' ';
+		result[++k] = *(char*)pop(&operators);
+	}
+	return result;
+}
 
 
 

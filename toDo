@@ -1,0 +1,7 @@
+create two stacks
+	1. for operands
+	2.operators.
+if character of expression is digit hten push in operands.
+if character of expression is operator hten push in operators.
+In operator stack when lower president operator is at the top
+	pop below one operator and push it to operand stack.
